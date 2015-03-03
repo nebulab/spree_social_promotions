@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Spree::SocialCoupon, type: :model do
   describe 'associations' do
-    it { is_expected.to belong_to(:promotion) }
+    it { is_expected.to belong_to(:promotion_rule) }
     it { is_expected.to belong_to(:order) }
   end
 

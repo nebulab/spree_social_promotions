@@ -1,5 +1,5 @@
 class Spree::SocialCoupon < ActiveRecord::Base
-  belongs_to :promotion
+  belongs_to :promotion_rule
   belongs_to :order
 
   validates :code,
