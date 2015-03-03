@@ -19,7 +19,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :promotion_social_coupon_rule, class: 'Spree::Promotion::Rules::SocialPromoCodeRule' do
+  factory :promotion_social_coupon_rule, class: 'Spree::Promotion::Rules::SocialCouponRule' do
     # association :promotion
   end
 end
@@ -29,7 +29,7 @@ FactoryGirl.modify do
     trait :with_social_coupon_rule do
 
       after(:create) do |promotion, _evaluator|
-        rule = Spree::Promotion::Rules::SocialPromoCode.create!()
+        rule = Spree::Promotion::Rules::SocialCouponRule.create!()
 
         # example coupons
         rule << create(:social_coupon, promotion_rule: rule)

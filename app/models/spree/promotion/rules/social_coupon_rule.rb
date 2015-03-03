@@ -3,7 +3,7 @@
 module Spree
   class Promotion
     module Rules
-      class SocialPromoCodeRule < PromotionRule
+      class SocialCouponRule < PromotionRule
         has_many :social_coupons
         # accept_nested_attributes_for :social_coupons
 
