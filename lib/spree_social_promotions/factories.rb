@@ -28,10 +28,13 @@ FactoryGirl.modify do
   factory :promotion, class: Spree::Promotion do
     trait :with_social_coupon_rule do
 
-      after(:create) do |promotion, evaluator|
-        # cosa ci metto qui dentro? come li metto i coupons?
-        #rule = Spree::Promotion::Rules::SocialPromoCode.create!()
-        rule = create :promotion_social_coupon_rule
+      after(:create) do |promotion, _evaluator|
+        rule = Spree::Promotion::Rules::SocialPromoCode.create!()
+
+        # example coupons
+        rule << create(:social_coupon, promotion_rule: rule)
+        rule << create(:social_coupon, promotion_rule: rule)
+
         promotion.rules << rule
         promotion.save!
       end

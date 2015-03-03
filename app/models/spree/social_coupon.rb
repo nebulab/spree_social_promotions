@@ -6,7 +6,7 @@ class Spree::SocialCoupon < ActiveRecord::Base
     presence: true,
     uniqueness: { case_sensitive: false }
 
-  validates :promotion, presence: true
+  validates :promotion_rule, presence: true
 
   def code=(value)
     write_attribute(:code, value.downcase.strip) if value
