@@ -13,7 +13,7 @@ Spree::PromotionHandler::Coupon.class_eval do
     # then result here will also be `true`.
     result = promotion.activate(:order => order)
     if result
-      if promotion.rules.where(type: 'Spree::Promotion::Rules::SocialCouponRule').first
+      if promotion.rules.where(type: 'Spree::Promotion::Rules::SocialCouponRule').any?
         order.update_totals
         order.persist_totals
         set_success_code :coupon_code_applied

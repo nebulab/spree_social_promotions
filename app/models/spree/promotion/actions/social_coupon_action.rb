@@ -6,7 +6,6 @@ module Spree
         include Spree::AdjustmentSource
 
         has_many :adjustments, as: :source
-
         delegate :eligible?, to: :promotion
 
         before_validation -> { self.calculator ||= Spree::Calculator::SocialCoupon.new }
@@ -38,8 +37,7 @@ module Spree
             order: order,
             adjustable: order,
             source: self,
-            label: "#{Spree.t(:promotion)} (#{promotion.name})",
-            eligible: true
+            label: "#{Spree.t(:promotion)} (#{promotion.name})"
           )
         end
 
