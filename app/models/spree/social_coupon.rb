@@ -9,11 +9,11 @@ class Spree::SocialCoupon < ActiveRecord::Base
   validates :promotion_rule, presence: true
 
   def code=(value)
-    write_attribute(:code, value.downcase.strip) if value
+    write_attribute(:code, value.strip.downcase) if value
   end
 
   def self.by_code(code)
     return nil unless code
-    where(code: code.downcase.strip).first
+    where(code: code.strip.downcase, disabled: false).first
   end
 end

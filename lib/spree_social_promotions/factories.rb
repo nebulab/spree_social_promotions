@@ -1,5 +1,3 @@
-# require 'spree/testing_support/factories'
-
 FactoryGirl.define do
   # Define your Spree extensions Factories within this file to enable applications, and other extensions to use and override them.
   #
@@ -8,7 +6,6 @@ FactoryGirl.define do
 
   factory :social_coupon, class: 'Spree::SocialCoupon' do
     sequence(:code) { |n| "coupon-#{n}" }
-    # association :promotion_social_coupon_rule
     promotion_rule factory: :promotion_social_coupon_rule
 
     disabled false
@@ -19,7 +16,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :promotion_social_coupon_rule, class: 'Spree::Promotion::Rules::SocialCouponRule' do
+  factory :promotion_social_coupon_rule, class: Spree::Promotion::Rules::SocialCouponRule do
     # association :promotion
   end
 end
@@ -31,7 +28,6 @@ FactoryGirl.modify do
       after(:create) do |promotion, _evaluator|
         rule = Spree::Promotion::Rules::SocialCouponRule.create!()
 
-        # example coupons
         rule << create(:social_coupon, promotion_rule: rule)
         rule << create(:social_coupon, promotion_rule: rule)
 

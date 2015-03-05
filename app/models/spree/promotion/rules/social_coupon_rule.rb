@@ -4,22 +4,26 @@ module Spree
   class Promotion
     module Rules
       class SocialCouponRule < PromotionRule
-        has_many :social_coupons
-        # accept_nested_attributes_for :social_coupons
+        has_many :social_coupons, dependent: :destroy, foreign_key: 'promotion_rule_id'
 
         def applicable?(promotable)
           promotable.is_a?(Spree::Order)
         end
 
         def eligible?(order, options = {})
-          true
+          social_coupons.by_code(order.coupon_code).present?
         end
 
-        def social_coupons
-          promotion.social_coupons
+        def raw_social_coupons
+          ""
         end
 
-        def social_coupons=(coupons)
+        def raw_social_coupons=(coupons)
+          all_coupons = coupons.split(/\r?\n/).select(&:present?).map {|c| c.strip.downcase}.sort
+          saved_coupons = social_coupons.all.order(code: :asc).pluck(:code)
+          (all_coupons.sort - saved_coupons).each do |coupon|
+            social_coupons.create(code: coupon)
+          end
         end
       end
     end

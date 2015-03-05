@@ -3,3 +3,12 @@
 
 en:
   hello: "Hello world"
+  spree:
+    promotion_rule_types:
+      social_coupon_rule:
+        name: Social Coupon
+        description: Valid social coupons
+    promotion_action_types:
+      social_coupon_action:
+        name: Apply Social Coupon discount
+        description: Apply discount from social coupon

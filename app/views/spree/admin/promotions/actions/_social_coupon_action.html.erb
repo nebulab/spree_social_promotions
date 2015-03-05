@@ -1,0 +1,11 @@
+<% promotion_action.calculator.preferences.keys.map do |key| %>
+  <div class="form-group">
+    <% field_name = "#{param_prefix}[calculator_attributes][preferred_#{key}]" %>
+    <%= label_tag field_name, Spree.t(key.to_s) %>
+    <%= preference_field_tag(
+      field_name,
+      promotion_action.calculator.get_preference(key),
+      type: promotion_action.calculator.preference_type(key)) %>
+  </div>
+<% end %>
+<%= hidden_field_tag "#{param_prefix}[calculator_attributes][id]", promotion_action.calculator.id %>
