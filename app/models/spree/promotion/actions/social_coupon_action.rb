@@ -38,7 +38,8 @@ module Spree
             order: order,
             adjustable: order,
             source: self,
-            label: "#{Spree.t(:promotion)} (#{promotion.name})"
+            label: "#{Spree.t(:promotion)} (#{promotion.name})",
+            eligible: true
           )
         end
 
