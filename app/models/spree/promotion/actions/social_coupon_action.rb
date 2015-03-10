@@ -9,6 +9,7 @@ module Spree
         delegate :eligible?, to: :promotion
 
         before_validation -> { self.calculator ||= Spree::Calculator::SocialCoupon.new }
+        before_destroy :deals_with_adjustments_for_deleted_source
 
         def perform(options = {})
           order = options[:order]
@@ -17,10 +18,25 @@ module Spree
           amount = compute_amount(order)
           return if amount == 0
 
-          # TODO: remove coupon adjustement to any other eventual pending order
-          create_adjustment(order, amount)
-          # TODO: update social coupon with the current order
+          # remove coupon adjustement to any other eventual pending order
+          social_coupon = Spree::SocialCoupon.active.by_code(order.coupon_code)
+          return unless social_coupon
 
+          # find eventual previous uncompleted order
+          old_order = social_coupon.order
+          if old_order && !old_order.completed?
+            old_order.adjustments.promotion.each do |adjustment|
+              # destroy social coupon adjustement, if any
+              adjustment.update(eligible: false) if adjustment.source.type == 'Spree::Promotion::Actions::SocialCouponAction'
+              adjustment.destroy if adjustment.source.type == 'Spree::Promotion::Actions::SocialCouponAction'
+            end
+            # force update on the old order to recalculate adjustments
+            old_order.update!
+          end
+
+          create_adjustment(order, amount) &&
+          # update social coupon with the current order
+          social_coupon.update_attributes(order: order)
           true
         end
 
@@ -44,7 +60,6 @@ module Spree
         def promotion_credit_exists?(order)
           self.adjustments.where(adjustable_id: order.id).exists?
         end
-
       end
     end
   end

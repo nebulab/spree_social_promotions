@@ -7,17 +7,17 @@ FactoryGirl.define do
   factory :social_coupon, class: 'Spree::SocialCoupon' do
     sequence(:code) { |n| "coupon-#{n}" }
     promotion_rule factory: :promotion_social_coupon_rule
+    association :order
 
     disabled false
 
     trait :consumed do
-      association :order
       disabled true
     end
   end
 
   factory :promotion_social_coupon_rule, class: Spree::Promotion::Rules::SocialCouponRule do
-    # association :promotion
+    association :promotion
   end
 end
 
@@ -28,14 +28,13 @@ FactoryGirl.modify do
       after(:create) do |promotion, _evaluator|
         rule = Spree::Promotion::Rules::SocialCouponRule.create!()
 
-        rule << create(:social_coupon, promotion_rule: rule)
-        rule << create(:social_coupon, promotion_rule: rule)
+        rule.social_coupons << create(:social_coupon, promotion_rule: rule)
+        rule.social_coupons << create(:social_coupon, promotion_rule: rule)
 
         promotion.rules << rule
         promotion.save!
       end
     end
-
-    factory :promotion_with_social_coupon_rule, traits: [:with_social_coupon_rule]
   end
+
 end

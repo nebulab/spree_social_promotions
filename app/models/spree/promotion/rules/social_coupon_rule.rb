@@ -6,21 +6,16 @@ module Spree
       class SocialCouponRule < PromotionRule
         has_many :social_coupons, dependent: :destroy, foreign_key: 'promotion_rule_id'
 
-        # Generate a random string to be used as a placeholder on the promotion code
-        # This is necessary because otherwise promotion will be always applied AND
-        # will not check for our social coupons
-        #before_create -> { self.promotion.update_attributes(code: SecureRandom.hex(8)) }
-
         def applicable?(promotable)
           promotable.is_a?(Spree::Order)
         end
 
         def eligible?(order, options = {})
-          social_coupons.by_code(order.coupon_code).present?
+          social_coupons.active.by_code(order.coupon_code).present?
         end
 
         def raw_social_coupons
-          ""
+          ''
         end
 
         def raw_social_coupons=(coupons)
@@ -29,12 +24,6 @@ module Spree
           (all_coupons.sort - saved_coupons).each do |coupon|
             social_coupons.create(code: coupon)
           end
-        end
-
-        private
-
-        def generate_random_promotion_code
-          SecureRandom.hex(8)
         end
       end
     end

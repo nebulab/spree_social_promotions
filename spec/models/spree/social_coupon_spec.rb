@@ -45,4 +45,18 @@ RSpec.describe Spree::SocialCoupon, type: :model do
       expect(Spree::SocialCoupon.by_code('   ABCD   ')).to eq social_coupon
     end
   end
+
+  describe '.active' do
+    let(:active_social_coupon) { create(:social_coupon) }
+    let(:disabled_social_coupon) { create(:social_coupon, :consumed) }
+
+    before do
+      active_social_coupon
+      disabled_social_coupon
+    end
+
+    it 'returns active coupons' do
+      expect(Spree::SocialCoupon.active.to_a).to eq([active_social_coupon])
+    end
+  end
 end
