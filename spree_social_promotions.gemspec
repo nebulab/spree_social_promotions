@@ -2,11 +2,11 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_social_promotions'
-  s.version     = '2.4.3'
+  s.version     = '3.0.0'
   s.summary     = 'Manage social promotions for Spree'
   s.description = 'Manage social discount and promotions (Groupon Living Social) for Spree'
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.0.0'
 
   s.author    = 'Nebulab'
   s.email     = 'info@nebulab.it'
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 2.4.3'
+  s.add_dependency 'spree_core', '~> 3.0.0'
 
   s.add_development_dependency 'capybara', '~> 2.4'
   s.add_development_dependency 'coffee-rails'
