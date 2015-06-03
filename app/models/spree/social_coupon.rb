@@ -18,4 +18,8 @@ class Spree::SocialCoupon < ActiveRecord::Base
     return nil unless code
     where(code: code.strip.downcase).first
   end
+
+  def disable!
+    self.update_attributes(disabled: true)
+  end
 end
