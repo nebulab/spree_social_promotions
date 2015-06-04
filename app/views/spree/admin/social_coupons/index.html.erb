@@ -1,40 +1,57 @@
-<form action="/admin/social_coupons" method="get">
-  <input name="coupon_code" placeholder="Social Coupon Code" type="text" value="<%= params[:coupon_code] %>"></input>
-  <button>Find Social Coupon</button>
-</form>
+<% content_for :page_title do %>
+<%= plural_resource_name(Spree::SocialCoupon) %>
+<% end %>
 
-<br/>
-<br/>
+<div data-hook="admin_menu_social_coupons_index_search">
+  <%= form_tag "/admin/social_coupons", method:"get" do -%>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <%= label_tag :q_coupon_code, Spree.t(:coupon_code) %>
+        <%= text_field_tag :coupon_code, params[:coupon_code], tabindex: 1, class: "form-control" %>
+      </div>
+
+      <div data-hook="admin_menu_social_coupons_index_search_buttons" class="form-actions">
+        <%= button Spree.t(:search), 'search' %>
+      </div>
+    </div>
+  </div>
+  <% end -%>
+</div>
+
 
 <% if @social_coupon %>
-  <% meta_data = @social_coupon.promotion_rule.promotion.actions.where(type:Spree::Promotion::Actions::SocialCouponAction).first.calculator.preferences %>
-  <table class="index responsive">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Enabled</th>
-        <th>Promotion</th>
-        <th>Deadline</th>
-        <th>Amount before dedaline</th>
-        <th>Amount after dedaline</th>
-        <th>Currency</th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr style="text-align: center">
-        <td><%= @social_coupon.code %></td>
-        <td><%= !@social_coupon.disabled? %></td>
-        <td><%= link_to @social_coupon.promotion_rule.promotion.name, edit_admin_promotion_path(@social_coupon.promotion_rule.promotion) %></td>
-        <td><%= DateTime.parse(meta_data[:deadline_date]).strftime("%m/%d/%Y") %></td>
-        <td><%= meta_data[:amount_before_deadline] %></td>
-        <td><%= meta_data[:amount_after_deadline] %></td>
-        <td><%= meta_data[:currency] %></td>
-        <td>
-          <%= link_to 'disable', disable_admin_social_coupon_path(@social_coupon), class: 'button', data: {confirm: 'Do you really want to disable the following coupon code?'}, method: :put %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-md-12">
+    <% meta_data = @social_coupon.promotion_rule.promotion.actions.where(type:Spree::Promotion::Actions::SocialCouponAction).first.calculator.preferences %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Enabled</th>
+          <th>Promotion</th>
+          <th>Deadline</th>
+          <th>Amount before dedaline</th>
+          <th>Amount after dedaline</th>
+          <th>Currency</th>
+          <th class="actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="<%= spree_dom_id @social_coupon %>">
+          <td><%= @social_coupon.code %></td>
+          <td><%= !@social_coupon.disabled? %></td>
+          <td><%= link_to @social_coupon.promotion_rule.promotion.name, edit_admin_promotion_path(@social_coupon.promotion_rule.promotion) %></td>
+          <td><%= DateTime.parse(meta_data[:deadline_date]).strftime("%m/%d/%Y") %></td>
+          <td><%= meta_data[:amount_before_deadline] %></td>
+          <td><%= meta_data[:amount_after_deadline] %></td>
+          <td><%= meta_data[:currency] %></td>
+          <td class="actions actions-2">
+            <%= link_to 'disable', disable_admin_social_coupon_path(@social_coupon), class: 'btn btn-primary', data: {confirm: 'Do you really want to disable the following coupon code?'}, method: :put %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% end %>
