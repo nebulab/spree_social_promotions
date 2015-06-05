@@ -1,4 +1,4 @@
-<form action="/admin/social_coupons" method="get">
+<form action="<%= spree.admin_social_coupons_path %>" method="get">
   <input name="coupon_code" placeholder="Social Coupon Code" type="text" value="<%= params[:coupon_code] %>"></input>
   <button>Find Social Coupon</button>
 </form>
