@@ -3,7 +3,7 @@
 <% end %>
 
 <div data-hook="admin_menu_social_coupons_index_search">
-  <%= form_tag "/admin/social_coupons", method:"get" do -%>
+  <%= form_tag "/store/admin/social_coupons", method:"get" do -%>
   <div class="row">
     <div class="col-md-12">
       <div class="form-group">
@@ -47,7 +47,7 @@
           <td><%= meta_data[:amount_after_deadline] %></td>
           <td><%= meta_data[:currency] %></td>
           <td class="actions actions-2">
-            <%= link_to 'disable', disable_admin_social_coupon_path(@social_coupon), class: 'btn btn-primary', data: {confirm: 'Do you really want to disable the following coupon code?'}, method: :put %>
+            <%= link_to 'disable', disable_social_coupon_path(@social_coupon), class: 'btn btn-primary', data: {confirm: 'Do you really want to disable the following coupon code?'}, method: :put %>
           </td>
         </tr>
       </tbody>

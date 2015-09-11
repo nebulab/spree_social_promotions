@@ -1,10 +1,6 @@
 module Spree
   module Admin
     class SocialCouponsController < Spree::Admin::ResourceController
-
-      # promo rule id
-      # /admin/promotions/:promotion_id/promotion_rules/:id
-
       def index
         if params[:coupon_code]
           @social_coupon = Spree::SocialCoupon.active.by_code(params[:coupon_code])
